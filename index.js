@@ -137,66 +137,32 @@ if (cmd === "!cadd") {
     return message.reply({ embeds: [embed] });
   }
 
-// 🎰 !cflip <amount> — شیر یا خط با ریکشن ✅ ❌
-if (cmd === "!cflip") {
-  const amount = parseInt(args[0]);
-  if (isNaN(amount) || amount <= 0)
-    return message.reply("❌ لطفاً مقدار معتبر وارد کن (مثلاً `!cflip 100`)");
+  // 🪙 !cflip
+  if (cmd === "!cflip") {
+    const bet = parseInt(args[0]);
+    if (isNaN(bet) || bet <= 0)
+      return message.reply("❌ لطفاً مقدار شرط رو درست وارد کن."); 
 
-  const userCoins = getCoins(message.author.id);
-  if (userCoins < amount)
-    return message.reply("💸 کوین کافی نداری!");
+    if (getCoins(message.author.id) < bet)
+      return message.reply("💸 کوین کافی نداری!"); 
 
-  const embed = new EmbedBuilder()
-    .setColor("#FACC15")
-    .setTitle("🎲 شیر یا خط؟")
-    .setDescription(`برای شروع روی ✅ کلیک کن\nبرای لغو روی ❌ کلیک کن\n\n💰 مبلغ شرط: **${amount}** کوین`)
-    .setFooter({ text: "iGiveaway • Coin Flip System" });
-
-  const msg = await message.reply({ embeds: [embed] });
-  await msg.react("✅");
-  await msg.react("❌");
-
-  const filter = (reaction, user) => ["✅", "❌"].includes(reaction.emoji.name) && user.id === message.author.id;
-  const collector = msg.createReactionCollector({ filter, max: 1, time: 15000 });
-
-  collector.on("collect", async (reaction) => {
-    if (reaction.emoji.name === "❌") {
-      const cancelEmbed = new EmbedBuilder()
-        .setColor("#9CA3AF")
-        .setTitle("🚫 لغو شد")
-        .setDescription("بازی شیر یا خط لغو شد!");
-      return msg.edit({ embeds: [cancelEmbed] });
-    }
-
-    const win = Math.random() < 0.5; // ۵۰٪ شانس برد
-    if (win) {
-      addCoins(message.author.id, amount);
-      const winEmbed = new EmbedBuilder()
-        .setColor("#22C55E")
-        .setTitle("🏆 بردی!")
-        .setDescription(`بابا باریکلا! برنده شدی و ${amount} کوین گرفتی! 🚀`);
-      msg.edit({ embeds: [winEmbed] });
-    } else {
-      addCoins(message.author.id, -amount);
-      const loseEmbed = new EmbedBuilder()
-        .setColor("#EF4444")
-        .setTitle("💀 باختی!")
-        .setDescription(`برو بیرون! باختی و ${amount} کوین از دست دادی! (ناراحت نباش بفرما 🍭)`);
-      msg.edit({ embeds: [loseEmbed] });
-    }
-  });
-
-  collector.on("end", collected => {
-    if (collected.size === 0) {
-      const timeoutEmbed = new EmbedBuilder()
-        .setColor("#6B7280")
-        .setTitle("⌛ زمان تموم شد!")
-        .setDescription("پاسخی ندادی و بازی لغو شد.");
-      msg.edit({ embeds: [timeoutEmbed] });
-    }
-  });
-}
+    const win = Math.random() < 0.5;
+    if (win) {
+      addCoins(message.author.id, bet);
+      const embed = new EmbedBuilder()
+        .setColor("#22C55E")
+        .setTitle("🎉 بردی!")
+        .setDescription(`بابا باریکلا! برنده شدی و ${bet} کوین گرفتی! 🚀`);
+      return message.reply({ embeds: [embed] });
+    } else {
+      addCoins(message.author.id, -bet);
+      const embed = new EmbedBuilder()
+        .setColor("#EF4444")
+        .setTitle("💀 باختی!")
+        .setDescription(`برو بیرون! باختی و ${bet} کوین از دست دادی! (ناراحت نباش بفرما 🍭)`);
+      return message.reply({ embeds: [embed] });
+    }
+  }
   // 🚀 !cboost
   if (cmd === "!cboost") {
     const cost = 100;

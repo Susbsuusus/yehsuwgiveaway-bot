@@ -1,3 +1,12 @@
+// اگر فایل کوین‌ها وجود نداشته باشد، آن را ایجاد کن
+if (!fs.existsSync('coin.json')) {
+  fs.writeFileSync('coin.json', JSON.stringify({}, null, 2));
+}
+
+// اگر فایل گیواوی‌ها وجود نداشته باشد، آن را ایجاد کن
+if (!fs.existsSync('giveaways.json')) {
+  fs.writeFileSync('giveaways.json', JSON.stringify([], null, 2));
+}
 // ✅ ESM imports (برای جلوگیری از خطای require)
 import fs from "fs";
 import path from "path";

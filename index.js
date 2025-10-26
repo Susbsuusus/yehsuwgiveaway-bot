@@ -115,6 +115,21 @@ client.once("ready", async () => {
   console.log(`✅ Logged in as ${client.user.tag}!`);
   loadGiveaways();
 
+  // 🎮 اکتیویتی بات (۲ حالت متفاوت)
+  const activities = [
+    { name: "R.E.P.O with Elon Musk 🪐", type: 0 }, // 🎮 Playing
+    { name: "iPouyan Face ☁️", type: 3 }           // 👀 Watching
+  ];
+
+  let current = 0;
+  setInterval(() => {
+    client.user.setPresence({
+      activities: [activities[current]],
+      status: "online"
+    });
+    current = (current + 1) % activities.length;
+  }, 15000); // هر ۱۵ ثانیه یکی عوض میشه
+
   const activeCount = [...giveaways.values()].filter(g => !g.ended).length;
   try {
     const logChannel = await client.channels.fetch(LOG_CHANNEL_ID);
@@ -411,4 +426,4 @@ setInterval(async () => {
   } catch (err) {
     console.log("🔴 Self-ping error:", err.message);
   }
-}, 5 * 60 * 1000); // هر ۵ دقیقه خودش رو پینگ می‌کنه
+}, 5 * 60 * 1000);

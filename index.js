@@ -109,6 +109,24 @@ client.on("messageCreate", async message => {
 
   // --- 💰 دستورات کوین --- //
 
+  // 💎 !cadd برای مدیران سرور
+if (cmd === "!cadd") {
+  if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator))
+    return message.reply("🚫 فقط ادمین‌ها اجازه استفاده از این دستور رو دارن!");
+
+  const target = message.mentions.users.first();
+  const amount = parseInt(args[1]);
+  if (!target || isNaN(amount) || amount <= 0)
+    return message.reply("❌ فرمت درست: `!cadd @user <amount>`");
+
+  addCoins(target.id, amount);
+  const embed = new EmbedBuilder()
+    .setColor("#00FF00")
+    .setTitle("💰 کوین اضافه شد!")
+    .setDescription(`✅ ${amount} کوین به ${target} داده شد!`);
+  return message.reply({ embeds: [embed] });
+}
+
   // 💵 !cbalance
   if (cmd === "!cbalance") {
     const balance = getCoins(message.author.id);

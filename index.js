@@ -117,8 +117,8 @@ client.once("ready", async () => {
 
   // 🎮 اکتیویتی بات (۲ حالت متفاوت)
   const activities = [
-    { name: "R.E.P.O with Elon Musk 🪐", type: 0 }, // 🎮 Playing
-    { name: "iPouyan Face ☁️", type: 3 }           // 👀 Watching
+    { name: "R.E.P.O with Elon Musk 🍷", type: 0 }, // 🎮 Playing
+    { name: "Loading...", type: 3 }                // 👀 Watching
   ];
 
   let current = 0;

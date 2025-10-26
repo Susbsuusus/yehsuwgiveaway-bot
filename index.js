@@ -102,6 +102,7 @@ client.once("ready", async () => {
 
 // 💬 پیام‌ها
 client.on("messageCreate", async message => {
+  // بررسی اینکه پیام از طرف بات نباشد
   if (!message.guild || message.author.bot) return;
 
   const args = message.content.split(" ");

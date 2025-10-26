@@ -1,3 +1,4 @@
+import { getCoins, addCoins, boostCost, boostRate } from "./coin.js";
 // ✅ ESM imports (برای جلوگیری از خطای require)
 import fs from "fs";
 import path from "path";

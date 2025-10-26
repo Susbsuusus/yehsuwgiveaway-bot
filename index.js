@@ -362,3 +362,46 @@ setInterval(async () => {
     console.log("🔴 Self-ping error:", err.message);
   }
 }, 5 * 60 * 1000);
+
+// 🎉 پایان گیواوی
+async function endGiveaway(messageId, channel, forced = false) {
+  const data = giveaways.get(messageId);
+  if (!data || data.ended) return;
+
+  const ch = await client.channels.fetch(data.channelId);
+  const msg = await ch.messages.fetch(data.messageId);
+  const users = (await msg.reactions.cache.get("🍁")?.users.fetch())?.filter(u => !u.bot);
+
+  if (!users || users.size === 0)
+    return msg.edit({
+      embeds: [
+        new EmbedBuilder()
+          .setColor("#EF4444")
+          .setTitle("❌ گیواوی به پایان رسید")
+          .setDescription("هیچ شرکت‌کننده‌ای پیدا نشد 😢")
+      ]
+    });
+
+  const winners = [];
+  const entries = Array.from(users.keys());
+
+  for (let i = 0; i < data.winnersCount; i++) {
+    if (entries.length === 0) break;
+    const winnerId = entries.splice(Math.floor(Math.random() * entries.length), 1)[0];
+    winners.push(`<@${winnerId}>`);
+  }
+
+  const embed = new EmbedBuilder()
+    .setColor("#22C55E")
+    .setTitle("🎉 گیواوی به پایان رسید! 🎉")
+    .setDescription(`🎁 **${data.prize}**  
+    👑 برندگان: ${winners.join(", ")}`)
+    .setFooter({ text: forced ? "پایان دستی" : "پایان خودکار" })
+    .setTimestamp();
+
+  await msg.edit({ embeds: [embed] });
+  await ch.send(`🎉 تبریک به ${winners.join(", ")} برای بردن **${data.prize}**!`);
+
+  data.ended = true;
+  giveaways.set(messageId, data);
+}

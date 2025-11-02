@@ -1,6 +1,7 @@
 // index.js
-const { Client, GatewayIntentBits, ActivityType } = require("discord.js");
-require("dotenv").config();
+import { Client, GatewayIntentBits, ActivityType } from "discord.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds],
@@ -9,16 +10,9 @@ const client = new Client({
 client.once("ready", () => {
   console.log(`✅ Logged in as ${client.user.tag}`);
 
-  // ست کردن چند اکتیویتی پشت‌سر‌هم
   const activities = [
-    {
-      name: "Enjoying iGiveaway 🎃",
-      type: ActivityType.Watching, // Watching
-    },
-    {
-      name: "R.E.P.O with Elon Musk 🍻",
-      type: ActivityType.Playing, // Playing
-    },
+    { name: "Enjoying iGiveaway 🎃", type: ActivityType.Watching },
+    { name: "R.E.P.O with Elon Musk 🍻", type: ActivityType.Playing },
   ];
 
   let i = 0;
@@ -26,7 +20,7 @@ client.once("ready", () => {
     const activity = activities[i];
     client.user.setActivity(activity.name, { type: activity.type });
     i = (i + 1) % activities.length;
-  }, 10000); // هر 10 ثانیه تغییر می‌کند
+  }, 10000);
 });
 
 client.login(process.env.TOKEN);

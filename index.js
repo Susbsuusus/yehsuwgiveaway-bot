@@ -56,10 +56,6 @@ client.on("messageCreate", async (message) => {
       .setTitle(title)
       .setDescription(description)
       .setColor(color)
-      .setFooter({
-        text: `ارسال شده توسط ${message.author.username}`,
-        iconURL: message.author.displayAvatarURL(),
-      })
       .setTimestamp();
 
     if (image) embed.setImage(image);

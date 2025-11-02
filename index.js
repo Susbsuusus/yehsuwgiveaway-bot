@@ -34,7 +34,7 @@ client.once("ready", () => {
     const activity = activities[currentActivity];
     client.user.setActivity(activity.name, { type: activity.type });
     currentActivity = (currentActivity + 1) % activities.length;
-  }, 10000); // هر 10 ثانیه تغییر می‌کنه
+  }, 10000);
 });
 
 client.on("messageCreate", async (message) => {

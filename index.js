@@ -52,11 +52,11 @@ client.on("messageCreate", async (message) => {
     const buttonUrl = parts[4] || null;
     const buttonLabel = parts[5] || null;
 
+    // ساخت embed بدون footer و بدون timestamp
     const embed = new EmbedBuilder()
       .setTitle(title)
       .setDescription(description)
-      .setColor(color)
-      .setTimestamp();
+      .setColor(color);
 
     if (image) embed.setImage(image);
 
@@ -70,6 +70,7 @@ client.on("messageCreate", async (message) => {
       components.push(row);
     }
 
+    // ارسال embed ساده و تمیز
     await message.channel.send({ embeds: [embed], components });
   }
 });
